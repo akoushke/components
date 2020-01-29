@@ -7,6 +7,7 @@ import {useMeeting} from '../hooks';
 import {WebexInMeeting, WebexInterstitialMeeting, WebexMeetingControl, WebexMeetingControls} from '..';
 
 import './WebexMeeting.css';
+import useMeetingDestination from '../hooks/useMeetingDestination';
 
 /**
  * Webex Meeting component displays the default Webex meeting experience.
@@ -15,9 +16,9 @@ import './WebexMeeting.css';
  * @returns {object} JSX of the component
  */
 export default function WebexMeeting({meetingDestination, controls}) {
-  const {ID} = useMeeting(null, meetingDestination);
-  // Subscribe to meeting updates after meeting creation
+  const {ID} = useMeetingDestination(meetingDestination);
   const {remoteVideo} = useMeeting(ID);
+
   const isActive = remoteVideo !== null;
   const meetingControls = controls(isActive).map((key) => <WebexMeetingControl key={key} type={key} />);
 
@@ -25,7 +26,7 @@ export default function WebexMeeting({meetingDestination, controls}) {
     <div className="meeting">
       {ID ? (
         <Fragment>
-          {isActive ? <WebexInMeeting meetingID={ID} /> : <WebexInterstitialMeeting meetingID={ID} />}
+          {isActive ? <h1>WebexInMeeting</h1> : <h1>WebexInterstitialMeeting</h1>}
           <WebexMeetingControls meetingID={ID}>{meetingControls}</WebexMeetingControls>
         </Fragment>
       ) : (
